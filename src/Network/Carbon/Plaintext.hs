@@ -5,6 +5,7 @@ module Network.Carbon.Plaintext
     -- ** Connections
     Connection(..)
   , connect
+  , disconnect
 
     -- ** Metrics
   , sendMetrics
@@ -48,6 +49,13 @@ connect sockAddr = fmap Connection $ do
   s <- Network.socket Network.AF_INET Network.Stream Network.defaultProtocol
   Network.connect s sockAddr
   return s
+
+
+--------------------------------------------------------------------------------
+-- | Disconnect from Carbon. Note that it's still valid to 'sendMetrics' to this
+-- 'Connection', and it will result in a reconnection.
+disconnect :: Connection -> IO ()
+disconnect (Connection s) = Network.close s
 
 
 --------------------------------------------------------------------------------
