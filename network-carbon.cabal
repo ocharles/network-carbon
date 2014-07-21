@@ -1,5 +1,5 @@
 name: network-carbon
-version: 1.0.0
+version: 1.0.1
 synopsis: A Haskell implementation of the Carbon protocol (part of the Graphite monitoring tools)
 homepage: http://github.com/ocharles/network-carbon
 license: BSD3
