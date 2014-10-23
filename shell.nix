@@ -6,6 +6,13 @@ let
     };
   };
 
-in pkgs.lib.overrideDerivation haskellPackages.networkCarbon (attrs: {
-     buildInputs = [ haskellPackages.cabalInstall_1_18_0_3 ] ++ attrs.buildInputs;
-   })
+in pkgs.myEnvFun {
+     name = haskellPackages.networkCarbon.name;
+     buildInputs = [
+       pkgs.curl
+       (haskellPackages.ghcWithPackages (hs: ([
+         hs.cabalInstall
+         hs.hscolour
+       ] ++ hs.networkCarbon.propagatedNativeBuildInputs)))
+     ];
+   }
