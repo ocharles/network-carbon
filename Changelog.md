@@ -1,3 +1,7 @@
+## 1.0.5
+
+* Correct the lower-bound of `bytestring` (introduced by @bergmark in 1.0.3)
+
 ## 1.0.4
 
 * Increased upper-bound of `vector`.
