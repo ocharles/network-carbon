@@ -1,3 +1,7 @@
+## 1.0.4
+
+* Increased upper-bound of `vector`.
+
 ## 1.0.3
 
 * Increased upper-bounds of:
