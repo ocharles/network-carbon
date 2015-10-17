@@ -17,6 +17,7 @@ module Network.Carbon.Plaintext
   )
   where
 
+import Control.Exception (bracketOnError)
 import Control.Monad (unless)
 import Data.Monoid ((<>), mempty, mappend)
 import Data.Typeable (Typeable)
@@ -46,9 +47,10 @@ data Connection = Connection
 -- | Connect to Carbon.
 connect :: Network.SockAddr -> IO Connection
 connect sockAddr = fmap Connection $ do
-  s <- Network.socket Network.AF_INET Network.Stream Network.defaultProtocol
-  Network.connect s sockAddr
-  return s
+  let openSocket = Network.socket Network.AF_INET Network.Stream Network.defaultProtocol
+  bracketOnError openSocket
+                 Network.close
+                 (\s -> fmap (const s) (Network.connect s sockAddr))
 
 
 --------------------------------------------------------------------------------
