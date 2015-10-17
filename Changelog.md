@@ -1,3 +1,9 @@
+## 1.0.6
+
+* Use `bracketOnError` when opening the network socket. Thanks to @purefn
+  for this improvement, which should stop `network-carbon` leaking file
+  descriptors when connections fail.
+
 ## 1.0.5
 
 * Correct the lower-bound of `bytestring` (introduced by @bergmark in 1.0.3)
