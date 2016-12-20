@@ -1,3 +1,7 @@
+## 1.0.7
+
+* Now builds with GHC 8.0.1
+
 ## 1.0.6
 
 * Use `bracketOnError` when opening the network socket. Thanks to @purefn
