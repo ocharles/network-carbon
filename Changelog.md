@@ -1,3 +1,7 @@
+## 1.0.8
+
+* Increase upper bound of `time`.
+
 ## 1.0.7
 
 * Now builds with GHC 8.0.1
