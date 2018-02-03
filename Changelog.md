@@ -1,3 +1,11 @@
+## 1.0.11
+
+### Other Changes
+
+* Increased the upper bound of `time`.
+
+---
+
 ## 1.0.10
 
 ### Other Changes
