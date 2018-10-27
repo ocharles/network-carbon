@@ -1,3 +1,11 @@
+## Unreleased
+
+### Other Changes
+
+* Increased the upper bound of `network`.
+
+---
+
 ## 1.0.13
 
 ### Other Changes
