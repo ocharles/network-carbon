@@ -1,3 +1,11 @@
+## Unreleased
+
+### Other Changse
+
+* Increased the upper bound of `base` to < 4.15.
+* Increased the upper bound of `network` to < 3.2.
+* Support `network-3` (see https://github.com/ocharles/network-carbon/pull/8).
+
 ## 1.0.14
 
 ### Other Changes
