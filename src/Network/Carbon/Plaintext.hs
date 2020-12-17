@@ -1,5 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP #-}
 module Network.Carbon.Plaintext
   ( -- * Interacting with Carbon
     -- ** Connections
@@ -18,9 +19,8 @@ module Network.Carbon.Plaintext
   where
 
 import Control.Exception (bracketOnError)
-import Control.Monad (unless)
-import Data.Monoid ((<>), mempty, mappend)
 import Data.Typeable (Typeable)
+import System.IO.Error
 
 import qualified Data.ByteString.Builder as Builder
 import qualified Data.Time as Time
@@ -30,6 +30,13 @@ import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Network.Socket as Network
 import qualified Network.Socket.ByteString.Lazy as Network
+
+#if !MIN_VERSION_base(4, 14, 0)
+import GHC.IO.Exception ( IOErrorType( ResourceVanished ) )
+
+isResourceVanishedError :: IOError -> Bool
+isResourceVanishedError err = (ioeGetErrorType err) == ResourceVanished
+#endif
 
 --------------------------------------------------------------------------------
 -- | Low-level representation of a Carbon connection. It's suggested that you
@@ -84,10 +91,9 @@ sendMetrics :: Connection -> V.Vector Metric -> IO ()
 sendMetrics c ms = do
   let socket = connectionSocket c
 
-  do isWritable <- Network.isWritable socket
-     unless isWritable (reconnect c)
-
-  Network.sendAll socket (Builder.toLazyByteString (V.foldl' mappend mempty (V.map encodeMetric ms)))
+  catchIOError
+    (Network.sendAll socket (Builder.toLazyByteString (V.foldl' mappend mempty (V.map encodeMetric ms))))
+    (\e -> if isResourceVanishedError e then reconnect c >> sendMetrics c ms else ioError e)
 
 --------------------------------------------------------------------------------
 -- | Send a single metric.
